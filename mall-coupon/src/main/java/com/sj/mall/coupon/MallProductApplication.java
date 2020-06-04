@@ -1,8 +1,9 @@
-package com.sj.mall.product;
+package com.sj.mall.coupon;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 /*
 1 整合mybatis-plus
  1）导入依赖
@@ -15,12 +16,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         2）告诉Mybatis-plus sql的映射文件
 
  */
-@MapperScan("com.sj.mall.product.dao")
+
 @SpringBootApplication
-public class MallProductApplication {
+class MallCouponApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MallProductApplication.class, args);
+        SpringApplication.run(MallCouponApplication.class, args);
     }
 
 }
