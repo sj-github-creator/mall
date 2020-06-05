@@ -3,6 +3,8 @@ package com.sj.mall.product;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
 /*
 1 整合mybatis-plus
  1）导入依赖
@@ -17,6 +19,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @MapperScan("com.sj.mall.product.dao")
 @SpringBootApplication
+@EnableDiscoveryClient
 public class MallProductApplication {
 
     public static void main(String[] args) {

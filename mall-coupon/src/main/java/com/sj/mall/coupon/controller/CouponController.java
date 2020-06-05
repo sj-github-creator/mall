@@ -1,21 +1,29 @@
 package com.sj.mall.coupon.controller;
 
+import com.sj.common.utils.PageUtils;
+import com.sj.common.utils.R;
+import com.sj.mall.coupon.entity.CouponEntity;
+import com.sj.mall.coupon.service.CouponService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Arrays;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.sj.mall.coupon.entity.CouponEntity;
-import com.sj.mall.coupon.service.CouponService;
-import com.sj.common.utils.PageUtils;
-import com.sj.common.utils.R;
-
+/*
+使用nacos作为配置中心统一管理配置
+1.引入依赖
+2.创建一个bootstrap.properties
+3.需要给配置中心默认添加一个叫  数据集 默认规则：应用名.properties
+4。给数据集添加任何配置
+5.动态获取配置
+ @RefreshScope：动态获取并且刷新配置
+  @Value("${配置项的名称}")获取到配置
+  如果配置中心和当前文件中都配置了相同的项优先使用配置中心的文件
+ */
 
 
 /**
@@ -25,11 +33,31 @@ import com.sj.common.utils.R;
  * @email shuaiju@gmail.com
  * @date 2020-06-04 17:46:59
  */
+//动态刷新配置
+@RefreshScope
 @RestController
 @RequestMapping("coupon/coupon")
 public class CouponController {
     @Autowired
     private CouponService couponService;
+
+    //获取在配置文件中的名字和年龄
+    @Value("${coupon.user.name}")
+    private String name;
+    @Value("${coupon.user.age}")
+    private Integer age;
+    @RequestMapping("/test")
+    public R test(){
+        return  R.ok().put("name",name).put("age",age);
+    }
+
+    @RequestMapping("/member/list")
+    public R membercoupons(){
+        CouponEntity couponEntity=new CouponEntity();
+        couponEntity.setCouponName("满300减40");
+        return R.ok().put("coupons",Arrays.asList(couponEntity));
+    }
+
 
     /**
      * 列表

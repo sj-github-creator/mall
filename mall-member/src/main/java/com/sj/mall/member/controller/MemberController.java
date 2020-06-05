@@ -1,20 +1,17 @@
 package com.sj.mall.member.controller;
 
+import com.sj.common.utils.PageUtils;
+import com.sj.common.utils.R;
+import com.sj.mall.member.entity.MemberEntity;
+import com.sj.mall.member.feign.CouponFeignService;
+import com.sj.mall.member.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Arrays;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.sj.mall.member.entity.MemberEntity;
-import com.sj.mall.member.service.MemberService;
-import com.sj.common.utils.PageUtils;
-import com.sj.common.utils.R;
 
 
 
@@ -30,6 +27,19 @@ import com.sj.common.utils.R;
 public class MemberController {
     @Autowired
     private MemberService memberService;
+    @Autowired
+    CouponFeignService couponFeignService;
+
+    @RequestMapping("/coupons")
+    public R test(){
+        MemberEntity memberEntity=new MemberEntity();
+        memberEntity.setNickname("张三");
+        //远程调用接口发送member/member/coupons 远程调用下面发放
+        R membercoupons=couponFeignService.membercoupons();
+        //从本地获得member，远程调用membercoupons
+        return R.ok().put("member",memberEntity).put("coupons",membercoupons.get("coupons"));
+
+    }
 
     /**
      * 列表
